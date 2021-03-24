@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  {% block head %}{% endblock %}
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200&display=swap" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" media="screen" href="{{prefix}}/static/style/main.css"/>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prefixfree/1.0.7/prefixfree.min.js"></script>
+  <script defer src="{{prefix}}/static/js/form.js"></script>
+  <script defer src="static/js/delete.js"></script>
+</head>
+
+<body style="background-image: url(/static/pics/databackground.png);">
+  <div class="rightnav">
+    <a href="/allgreetings" style="margin-left: 35px">Entry Records</a>
+</div>
+<div class="leftnav">
+    <a href="/greetings" style="margin-right: 35px">Latest measures</a>
+</div>
+{% block body %}{% endblock %}
+</body>
+
+</html>

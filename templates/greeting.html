@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Greetings</title>
+</head>
+
+<body>
+  {% if row %}
+  <h1>To {{row[1]}}:</h1>
+  <p>{{row[2]}}</p>
+  <p>{{row[3]}}</p>
+  <p>{{row[4]}}</p>
+  {% else %}
+  <p>Sorry&mdash;that greeting is unknown</p>
+  {% endif %}
+
+  <a href="..">Add a new greeting</a>
+</body>
+
+</html>

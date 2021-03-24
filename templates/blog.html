@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<title>Latest Measurements</title>
+<style>
+    * {
+        box-sizing: border-box;
+    }
+</style>
+{% endblock %}
+
+{% block body %}   
+    <div class="content">
+        <form method="POST" action="{{prefix}}/greetings" id="greetings-form">
+            <div>
+                <label style="color: black; font-weight: 900;" for="temperature">Temperature:</label>
+                <input type="text" id="temperature" name="temperature">
+            <div role="alert" id="temperature-feedback" class="feedback" aria-relevant="all"></div>
+            </div>
+            <div>
+                <label style="color: black; font-weight: 900;" for="humidity">Humidity:</label>
+                <input type="text" id="humidity" name="humidity">
+            <div role="alert" id="humidity-feedback" class="feedback" aria-relevant="all"></div>
+            </div>
+            <div>
+                <label style="color: black; font-weight: 900;" for="pressure">Pressure:</label>
+                <textarea id="pressure" name="pressure"></textarea>
+            <div role="alert" id="pressure-feedback" class="feedback" aria-relevant="all"></div>
+            </div>
+        <div>
+            <button type="submit">Post</button>
+        </div>
+        </form>  
+        {% if list %}
+        <div class="centered" id="greetings">
+        {% for row in list %}
+            <div id="greeting-{{row[0]}}">
+            <p>Temp: {{row[1]}} | Humid: {{row[2]}} | Pres: {{row[3]}} | Date: {{row[4]}} <button data-id="{{row[0]}}" class="delete">Delete</button></p>
+            </div>
+        {% endfor %}
+        </div>
+        
+        {% else %}
+        <p style="color: black; font-weight: 900;">There are no measurements</p>
+        {% endif %}
+    </div>
+{% endblock %}
