@@ -46,14 +46,22 @@ button {
 
 form {
   position: fixed;
+  top: 5%;
   left: 40%;
 }
 
-div.values {
+.content {
   position: fixed;
-  top: 50%;
+  top: 30%;
   left: 10%;
+  display: inline-block;
 }
+
+.values {
+  /* bring your own prefixes */
+  padding-bottom: 20px;
+}
+
 
 div.centered {
   position: fixed; /* or absolute */

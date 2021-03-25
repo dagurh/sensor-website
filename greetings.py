@@ -1,6 +1,7 @@
 """Creates a simpleminded greetings web site based on a SQLite db"""
 from flask import Flask, render_template, redirect, url_for, request, escape
 from flask.wrappers import Response
+import json
 import greetings_db as db
 import itwot
 import re
@@ -8,6 +9,8 @@ import platform
 import argparse
 
 __CONFIG = itwot.config()
+app = Flask(__name__)
+
 
 __PORTS = {
     "w07": 3000,
@@ -21,7 +24,7 @@ __PORTS = {
     "opg4b": 7000,
 }
 
-app = Flask(__name__)
+
 
 def __parse_cmd_arguments() -> argparse.Namespace:
     """Parses command line arguments for the configuration
@@ -79,7 +82,7 @@ def greetings() -> str:
                 escape(request.form["temperature"]), escape(request.form["humidity"]), escape(request.form["pressure"])
             )
         return redirect(f"{__CONFIG['prefix']}/greetings")
-    return render_template("blog.html", list=db.ten_greetings())
+    return render_template("blog.html", list=db.ten_greetings(), maxtemp=db.max_temp()[0], mintemp=db.min_temp()[0], maxhum=db.max_hum()[0], minhum=db.min_hum()[0], maxpres=db.max_pres()[0], minpres=db.min_pres()[0])
 
 @app.route("/allgreetings", methods=["GET"])
 def allgreetings() -> str:
@@ -90,6 +93,30 @@ def allgreetings() -> str:
         str: the generated page
     """
     return render_template("records.html", list=db.all_greetings())
+
+@app.route("/maxtemp", methods=["GET"])
+def maxtemp() -> str:
+    return render_template("blog.html", list=db.max_temp())
+
+@app.route("/mintemp", methods=["GET"])
+def mintemp() -> str:
+    return render_template("blog.html", list=db.min_temp())
+
+@app.route("/maxhum", methods=["GET"])
+def maxhum() -> str:
+    return render_template("blog.html", list=db.max_hum())
+
+@app.route("/minhum", methods=["GET"])
+def minhum() -> str:
+    return render_template("blog.html", list=db.min_hum())
+
+@app.route("/maxpres", methods=["GET"])
+def maxpres() -> str:
+    return render_template("blog.html", list=db.max_pres())
+
+@app.route("/minpres", methods=["GET"])
+def minpres() -> str:
+    return render_template("blog.html", list=db.min_pres())
 
 
 if __name__ == "__main__":

@@ -56,6 +56,61 @@ def ten_greetings() -> List:
         )
         return cur.fetchall()
 
+def max_temp():
+    with sqlite3.connect(__GREETINGS_DB) as conn:
+        cur = conn.cursor()
+        cur.execute(
+            """SELECT MAX(temperature)
+               FROM greetings"""
+        )
+        return cur.fetchone()
+
+def min_temp():
+    with sqlite3.connect(__GREETINGS_DB) as conn:
+        cur = conn.cursor()
+        cur.execute(
+            """SELECT MIN(temperature)
+               FROM greetings"""
+        )
+        return cur.fetchone()
+
+def max_hum():
+    with sqlite3.connect(__GREETINGS_DB) as conn:
+        cur = conn.cursor()
+        cur.execute(
+            """SELECT MAX(humidity)
+               FROM greetings"""
+        )
+        return cur.fetchone()
+
+def min_hum():
+    with sqlite3.connect(__GREETINGS_DB) as conn:
+        cur = conn.cursor()
+        cur.execute(
+            """SELECT MIN(humidity)
+               FROM greetings"""
+        )
+        return cur.fetchone()
+
+def max_pres():
+    with sqlite3.connect(__GREETINGS_DB) as conn:
+        cur = conn.cursor()
+        cur.execute(
+            """SELECT MAX(pressure)
+               FROM greetings"""
+        )
+        return cur.fetchone()
+
+def min_pres():
+    with sqlite3.connect(__GREETINGS_DB) as conn:
+        cur = conn.cursor()
+        cur.execute(
+            """SELECT MIN(pressure)
+               FROM greetings"""
+        )
+        return cur.fetchone()
+
+
 def all_greetings() -> List:
     """Returns all the greetings in the DB
 

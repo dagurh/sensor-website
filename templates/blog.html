@@ -31,7 +31,79 @@
             <button type="submit">Post</button>
         </div>
         </form>
+        <div class="content">
+        {% if maxtemp %}
+        <div class="values" id="maxtemp">
+            <div id="maxtemp">
+            <p>Max Temperature measured: {{maxtemp}}</p>
+            </div>
+        </div>
         
+        {% else %}
+        <p style="color: black; font-weight: 900;">There is no max temperature</p>
+        {% endif %}
+
+        {% if mintemp %}
+        <div class="values" id="mintemp">
+            <div id="mintemp">
+            <p>Min Temperature measured: {{mintemp}}</p>
+            </div>
+        </div>
+        
+        {% else %}
+        <p style="color: black; font-weight: 900;">There is no min temperature</p>
+        {% endif %}
+
+
+        {% if maxhum %}
+        <div class="values" id="maxhum">
+            <div id="maxhum">
+            <p>Max Humidity measured: {{maxhum}}</p>
+            </div>
+        </div>
+        
+        {% else %}
+        <p style="color: black; font-weight: 900;">There is no max humidity</p>
+        {% endif %}
+
+
+        {% if minhum %}
+        <div class="values" id="minhum">
+            <div id="minhum">
+            <p>Min Humidity measured: {{minhum}}</p>
+            </div>
+        </div>
+        
+        {% else %}
+        <p style="color: black; font-weight: 900;">There is no min humidity</p>
+        {% endif %}
+
+
+        {% if maxpres %}
+        <div class="values" id="maxpres">
+            <div id="maxpres">
+            <p>Max Pressure measured: {{maxpres}}</p>
+            </div>
+        </div>
+        
+        {% else %}
+        <p style="color: black; font-weight: 900;">There is no max pressure</p>
+        {% endif %}
+
+
+        {% if minpres %}
+        <div class="values" id="minpres">
+            <div id="minpres">
+            <p>Min Pressure measured: {{minpres}}</p>
+            </div>
+        </div>
+        </div>
+
+
+        {% else %}
+        <p style="color: black; font-weight: 900;">There is no min pressure</p>
+        {% endif %}
+
         {% if list %}
         <div class="centered" id="greetings">
         {% for row in list %}
