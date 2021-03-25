@@ -38,29 +38,6 @@ def __parse_cmd_arguments() -> argparse.Namespace:
     )
     return parser.parse_args()
 
-
-def config() -> dict:
-    """Creates a dict with the correct configurartion parameters
-    for running locally and on the itWoT machines
-
-    Returns:
-        dict: The configuration parameters
-    """
-    args = __parse_cmd_arguments()
-    _config = {"prefix": "", "port": 6500, "debug": True}
-    redirection = args.redirection
-    if redirection in __PORTS:
-        _config["opg4a"] = __PORTS[redirection]
-    match = re.match(r"cs-itwot-(\d+)\.uni\.au\.dk", platform.node())
-    if match:
-        machine_no = match.group(1)
-        if not redirection:
-            redirection = "opg4a"
-        _config["prefix"] = f"https://itwot.cs.au.dk/VM{machine_no}/{redirection}"
-        _config["debug"] = False
-    return _config
-
-
 @app.route("/")
 def blog() -> str:
     """The front page, where users can enter a greeting
@@ -117,4 +94,3 @@ def allgreetings() -> str:
 
 if __name__ == "__main__":
     app.run(debug=__CONFIG["debug"], port=__CONFIG["port"])
-    print(config())
