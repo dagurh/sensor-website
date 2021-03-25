@@ -12,9 +12,9 @@
 {% block body %}   
     <div class="content"> 
         {% if list %}
-        <div class="centeredleft" id="allgreetings">
+        <div class="centeredleft" id="allmeasurements">
         {% for row in list %}
-            <div id="greeting-{{row[0]}}">
+            <div id="measurement-{{row[0]}}">
             <p>ID: {{row[0]}} | Temp: {{row[1]}} | Humid: {{row[2]}} | Pres: {{row[3]}} | Date: {{row[4]}}</p>
             </div>
         {% endfor %}

@@ -1,6 +1,6 @@
 'use strict';
 
-const form = document.querySelector('#greetings-form');
+const form = document.querySelector('#measurements-form');
 const temperature = document.querySelector('#temperature');
 const humidity = document.querySelector('#humidity');
 const pressure = document.querySelector('#pressure');

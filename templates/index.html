@@ -11,7 +11,7 @@
 
 {% block body %}   
     <div class="content">
-        <form method="POST" action="/VM21/opg4a/greetings" id="greetings-form">
+        <form method="POST" action="{{prefix}}/measurements" id="measurements-form">
             <div>
                 <label style="color: black; font-weight: 900;" for="temperature">Temperature:</label>
                 <input type="text" id="temperature" name="temperature">
@@ -105,9 +105,9 @@
         {% endif %}
 
         {% if list %}
-        <div class="centered" id="greetings">
+        <div class="centered" id="measurements">
         {% for row in list %}
-            <div id="greeting-{{row[0]}}">
+            <div id="measurement-{{row[0]}}">
             <p>Temp: {{row[1]}} | Humid: {{row[2]}} | Pres: {{row[3]}} | Date: {{row[4]}} <button data-id="{{row[0]}}" class="delete">Delete</button></p>
             </div>
         {% endfor %}

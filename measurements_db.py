@@ -2,9 +2,9 @@
 import sqlite3
 from typing import Iterable, List
 
-__GREETINGS_DB = "greetings.db"
+__MEASUREMENTS_DB = "measurements.db"
 __CREATE_SQL = """
-CREATE TABLE IF NOT EXISTS greetings
+CREATE TABLE IF NOT EXISTS measurements
 (temperature TEXT NOT NULL,
  humidity TEXT NOT NULL,
  pressure TEXT NOT NULL,
@@ -15,150 +15,150 @@ CREATE TABLE IF NOT EXISTS greetings
 def create_database():
     """Creates the database"""
     with sqlite3.connect(
-        __GREETINGS_DB, detect_types=sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES
+        __MEASUREMENTS_DB, detect_types=sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES
     ) as conn:
         cur = conn.cursor()
         cur.execute(__CREATE_SQL)
         conn.commit()
 
 
-def store_greeting(temperature: str, humidity: str, pressure: str) -> int:
-    """Stores a greeting in the DB
+def store_measurement(temperature: str, humidity: str, pressure: str) -> int:
+    """Stores a measurement in the DB
 
     Args:
-        temperature (str): the temperature of the greeting
-        pressure (str): the pressure of the greeting
+        temperature (str): the temperature of the measurement
+        pressure (str): the pressure of the measurement
 
     Returns:
         int: the number of rows affected (should be 1)
     """
-    with sqlite3.connect(__GREETINGS_DB) as conn:
+    with sqlite3.connect(__MEASUREMENTS_DB) as conn:
         cur = conn.cursor()
         cur.execute(
-            "INSERT INTO greetings VALUES (?,?,?,DATETIME('now'))", (temperature, humidity, pressure)
+            "INSERT INTO measurements VALUES (?,?,?,DATETIME('now'))", (temperature, humidity, pressure)
         )
         conn.commit()
         return cur.rowcount
 
 
-def ten_greetings() -> List:
-    """Returns all the greetings in the DB
+def ten_measurements() -> List:
+    """Returns all the measurements in the DB
 
     Returns:
         List: a list of tuples
     """
-    with sqlite3.connect(__GREETINGS_DB) as conn:
+    with sqlite3.connect(__MEASUREMENTS_DB) as conn:
         cur = conn.cursor()
         cur.execute(
             """SELECT rowid,temperature,humidity,pressure,date
-               FROM greetings
+               FROM measurements
                ORDER BY rowid DESC LIMIT 10;"""
         )
         return cur.fetchall()
 
 def max_temp():
-    with sqlite3.connect(__GREETINGS_DB) as conn:
+    with sqlite3.connect(__MEASUREMENTS_DB) as conn:
         cur = conn.cursor()
         cur.execute(
             """SELECT MAX(temperature)
-               FROM greetings"""
+               FROM measurements"""
         )
         return cur.fetchone()
 
 def min_temp():
-    with sqlite3.connect(__GREETINGS_DB) as conn:
+    with sqlite3.connect(__MEASUREMENTS_DB) as conn:
         cur = conn.cursor()
         cur.execute(
             """SELECT MIN(temperature)
-               FROM greetings"""
+               FROM measurements"""
         )
         return cur.fetchone()
 
 def max_hum():
-    with sqlite3.connect(__GREETINGS_DB) as conn:
+    with sqlite3.connect(__MEASUREMENTS_DB) as conn:
         cur = conn.cursor()
         cur.execute(
             """SELECT MAX(humidity)
-               FROM greetings"""
+               FROM measurements"""
         )
         return cur.fetchone()
 
 def min_hum():
-    with sqlite3.connect(__GREETINGS_DB) as conn:
+    with sqlite3.connect(__MEASUREMENTS_DB) as conn:
         cur = conn.cursor()
         cur.execute(
             """SELECT MIN(humidity)
-               FROM greetings"""
+               FROM measurements"""
         )
         return cur.fetchone()
 
 def max_pres():
-    with sqlite3.connect(__GREETINGS_DB) as conn:
+    with sqlite3.connect(__MEASUREMENTS_DB) as conn:
         cur = conn.cursor()
         cur.execute(
             """SELECT MAX(pressure)
-               FROM greetings"""
+               FROM measurements"""
         )
         return cur.fetchone()
 
 def min_pres():
-    with sqlite3.connect(__GREETINGS_DB) as conn:
+    with sqlite3.connect(__MEASUREMENTS_DB) as conn:
         cur = conn.cursor()
         cur.execute(
             """SELECT MIN(pressure)
-               FROM greetings"""
+               FROM measurements"""
         )
         return cur.fetchone()
 
 
-def all_greetings() -> List:
-    """Returns all the greetings in the DB
+def all_measurements() -> List:
+    """Returns all the measurements in the DB
 
     Returns:
         List: a list of tuples
     """
-    with sqlite3.connect(__GREETINGS_DB) as conn:
+    with sqlite3.connect(__MEASUREMENTS_DB) as conn:
         cur = conn.cursor()
         cur.execute(
             """SELECT rowid,temperature,humidity,pressure,date
-               FROM greetings
+               FROM measurements
                ORDER BY rowid;"""
         )
         return cur.fetchall()
 
 
 
-def get_greeting(rowid: int) -> tuple:
-    """Gets a specific greeting
+def get_measurement(rowid: int) -> tuple:
+    """Gets a specific measurement
 
     Args:
-        rowid (int): the rowid of the greeting in the DB
+        rowid (int): the rowid of the measurement in the DB
 
     Returns:
-        tuple: the matching greeting
+        tuple: the matching measurement
     """
-    with sqlite3.connect(__GREETINGS_DB) as conn:
+    with sqlite3.connect(__MEASUREMENTS_DB) as conn:
         cur = conn.cursor()
         cur.execute(
-            "SELECT rowid,temperature,humidity,pressure FROM greetings WHERE rowid = ?;",
+            "SELECT rowid,temperature,humidity,pressure FROM measurements WHERE rowid = ?;",
             (rowid,),
         )
         return cur.fetchone()
 
 
-def delete_greeting(rowid: int) -> int:
-    """Deletes a specific greeting
+def delete_measurement(rowid: int) -> int:
+    """Deletes a specific measurement
 
     Args:
-        rowid (int): the rowid of the greeting to be deleted
+        rowid (int): the rowid of the measurement to be deleted
 
     Returns:
         int: the number of affected rows (0 or 1)
     """
-    with sqlite3.connect(__GREETINGS_DB) as conn:
+    with sqlite3.connect(__MEASUREMENTS_DB) as conn:
         cur = conn.cursor()
         cur.execute(
-            "DELETE FROM greetings WHERE rowid = ?;",
+            "DELETE FROM measurements WHERE rowid = ?;",
             (rowid,),
         )
         conn.commit()
