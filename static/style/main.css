@@ -49,6 +49,12 @@ form {
   left: 40%;
 }
 
+div.values {
+  position: fixed;
+  top: 50%;
+  left: 10%;
+}
+
 div.centered {
   position: fixed; /* or absolute */
   top: 50%;

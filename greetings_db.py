@@ -72,6 +72,7 @@ def all_greetings() -> List:
         return cur.fetchall()
 
 
+
 def get_greeting(rowid: int) -> tuple:
     """Gets a specific greeting
 

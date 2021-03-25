@@ -115,7 +115,6 @@ def allgreetings() -> str:
     return render_template("records.html", list=db.all_greetings())
 
 
-
 if __name__ == "__main__":
     app.run(debug=__CONFIG["debug"], port=__CONFIG["port"])
     print(config())
