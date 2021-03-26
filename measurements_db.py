@@ -1,4 +1,4 @@
-"""Handles the database for the Greetings web site"""
+"""Handles the database for the measurements web site"""
 import sqlite3
 from typing import Iterable, List
 
@@ -26,8 +26,9 @@ def store_measurement(temperature: str, humidity: str, pressure: str) -> int:
     """Stores a measurement in the DB
 
     Args:
-        temperature (str): the temperature of the measurement
-        pressure (str): the pressure of the measurement
+        temperature (int): the temperature of the measurement
+        humidity (int) : the humidity of the measurement
+        pressure (int): the pressure of the measurement
 
     Returns:
         int: the number of rows affected (should be 1)
@@ -111,7 +112,7 @@ def min_pres():
         return cur.fetchone()
 
 
-def all_measurements(bla) -> List:
+def all_measurements(paged) -> List:
     """Returns all the measurements in the DB
 
     Returns:
@@ -122,7 +123,7 @@ def all_measurements(bla) -> List:
         cur.execute(
             """SELECT rowid,temperature,humidity,pressure,date
                FROM measurements
-               ORDER BY rowid LIMIT 20 OFFSET ?;""", (20*bla,)
+               ORDER BY rowid LIMIT 20 OFFSET ?;""", (20*paged,)
         )
         return cur.fetchall()
 

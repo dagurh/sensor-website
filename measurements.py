@@ -34,7 +34,7 @@ __PORTS = {
 
 @app.route("/")
 def index() -> str:
-    """The front page, where users can enter a measurement
+    """The front page, where users can view measurements
 
     Returns:
         str: the generated page
@@ -43,17 +43,14 @@ def index() -> str:
 
 @app.route("/measurements", methods=["GET"])
 def measurements() -> str:
-    return render_template("index.html", list=db.ten_measurements(), maxtemp=db.max_temp()[0], mintemp=db.min_temp()[0], maxhum=db.max_hum()[0], minhum=db.min_hum()[0], maxpres=db.max_pres()[0], minpres=db.min_pres()[0])
+    return render_template("index.html", list=db.ten_measurements(), 
+                            maxtemp=db.max_temp()[0], mintemp=db.min_temp()[0], 
+                            maxhum=db.max_hum()[0], minhum=db.min_hum()[0], 
+                            maxpres=db.max_pres()[0], minpres=db.min_pres()[0])
 
-@app.route("/allmeasurements/<int:bla>", methods=["GET"])
-def allmeasurements(bla) -> str:
-    """If invoked with POST, stores the supplied measurement in the DB, and redirect to the measurements.
-    If invoked with GET, generates the measurements
-
-    Returns:
-        str: the generated page
-    """
-    return render_template("records.html", list=db.all_measurements(bla))
+@app.route("/allmeasurements/<int:paged>", methods=["GET"])
+def allmeasurements(paged) -> str:
+    return render_template("records.html", list=db.all_measurements(paged))
 
 @app.route("/maxtemp", methods=["GET"])
 def maxtemp() -> str:
