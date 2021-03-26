@@ -10,6 +10,7 @@ import itwot
 import re
 import platform
 import argparse
+import time
 
 __CONFIG = itwot.config()
 app = Flask(__name__)
@@ -69,9 +70,11 @@ def handle_mqtt_message(client, userdata, message):
     payload = message.payload.decode()
     if topic.endswith("/json"):
         payload = json.loads(payload)
+        print("yay")
         if "pres" in payload:
             db.store_measurement(payload["temp"], payload["hum"], payload["pres"])
-    print(f"Received MQTT on {topic}: {payload}")
+            print(f"Received MQTT on {topic}: {payload}")
+    
 
 @app.route("/measurements", methods=["GET", "POST"])
 def measurements() -> str:
