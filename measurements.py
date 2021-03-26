@@ -1,6 +1,9 @@
 """Creates a simpleminded measurements web site based on a SQLite db"""
 from flask import Flask, render_template, redirect, url_for, request, escape
 from flask.wrappers import Response
+from signal import signal, SIGINT
+from sys import exit
+from flask_mqtt import Mqtt
 import json
 import measurements_db as db
 import itwot
@@ -10,7 +13,10 @@ import argparse
 
 __CONFIG = itwot.config()
 app = Flask(__name__)
+app.config["MQTT_BROKER_URL"] = "itwot.cs.au.dk"
+app.config["MQTT_BROKER_PORT"] = 1883
 
+mqtt = Mqtt(app)
 
 __PORTS = {
     "w07": 3000,
@@ -24,22 +30,6 @@ __PORTS = {
     "opg4b": 7000,
 }
 
-
-
-def __parse_cmd_arguments() -> argparse.Namespace:
-    """Parses command line arguments for the configuration
-
-    Returns:
-        argparse.Namespace: the given arguments
-    """
-    parser = argparse.ArgumentParser()
-    parser.add_argument(
-        "-r",
-        "--redirection",
-        choices=__PORTS.keys(),
-        help="The name of the redirection",
-    )
-    return parser.parse_args()
 
 @app.route("/")
 def index() -> str:
@@ -67,6 +57,21 @@ def measurement(rowid: int) -> str:
         return Response(status=404)
     return render_template("measurement.html", row=db.get_measurement(rowid))
 
+@mqtt.on_connect()
+def handle_connect(client, userdata, flags, rc):
+    print("connected to MQTT broker...", end="")
+    mqtt.subscribe("au602716/#")
+    print("subscribed")
+
+@mqtt.on_message()
+def handle_mqtt_message(client, userdata, message):
+    topic = message.topic
+    payload = message.payload.decode()
+    if topic.endswith("/json"):
+        payload = json.loads(payload)
+        if "pres" in payload:
+            db.store_measurement(payload["temp"], payload["hum"], payload["pres"])
+    print(f"Received MQTT on {topic}: {payload}")
 
 @app.route("/measurements", methods=["GET", "POST"])
 def measurements() -> str:
@@ -118,6 +123,14 @@ def maxpres() -> str:
 def minpres() -> str:
     return render_template("index.html", list=db.min_pres())
 
+def handler(signal_received, frame):
+    # Handle any cleanup here
+    print("SIGINT or CTRL-C detected. Exiting gracefully")
+    mqtt.unsubscribe_all()
+    exit(0)
 
 if __name__ == "__main__":
-    app.run(debug=__CONFIG["debug"], port=__CONFIG["port"])
+    signal(SIGINT, handler)
+    app.run(
+        debug=__CONFIG["debug"], 
+        port=__CONFIG["port"])

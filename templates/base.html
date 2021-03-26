@@ -6,18 +6,18 @@
   {% block head %}{% endblock %}
   <link rel="preconnect" href="https://fonts.gstatic.com">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200&display=swap" rel="stylesheet">
-  <link rel="stylesheet" type="text/css" media="screen" href="/VM21/opg4a/static/style/main.css"/>
+  <link rel="stylesheet" type="text/css" media="screen" href="{{prefix}}/static/style/main.css"/>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/prefixfree/1.0.7/prefixfree.min.js"></script>
-  <script defer src="/VM21/opg4a/static/js/form.js"></script>
+  <script defer src="{{prefix}}/static/js/form.js"></script>
   <script defer src="static/js/delete.js"></script>
 </head>
 
-<body style="background-image: url(/VM21/opg4a/static/pics/databackground.png);">
+<body style="background-image: url({{prefix}}/static/pics/databackground.png);">
   <div class="rightnav">
-    <a href="/VM21/opg4a/allmeasurements" style="margin-left: 35px">Entry Records</a>
+    <a href="{{prefix}}/allmeasurements" style="margin-left: 35px">Entry Records</a>
 </div>
 <div class="leftnav">
-    <a href="/VM21/opg4a/measurements" style="margin-right: 35px">Latest measures</a>
+    <a href="{{prefix}}/measurements" style="margin-right: 35px">Latest measures</a>
 </div>
 {% block body %}{% endblock %}
 </body>
