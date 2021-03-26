@@ -5,9 +5,9 @@ from typing import Iterable, List
 __MEASUREMENTS_DB = "measurements.db"
 __CREATE_SQL = """
 CREATE TABLE IF NOT EXISTS measurements
-(temperature TEXT NOT NULL,
- humidity TEXT NOT NULL,
- pressure TEXT NOT NULL,
+(temperature INTEGER NOT NULL,
+ humidity INTEGER NOT NULL,
+ pressure INTEGER NOT NULL,
  date TIMESTAMP NOT NULL);
 """
 
@@ -111,7 +111,7 @@ def min_pres():
         return cur.fetchone()
 
 
-def all_measurements() -> List:
+def all_measurements(bla) -> List:
     """Returns all the measurements in the DB
 
     Returns:
@@ -122,50 +122,9 @@ def all_measurements() -> List:
         cur.execute(
             """SELECT rowid,temperature,humidity,pressure,date
                FROM measurements
-               ORDER BY rowid;"""
+               ORDER BY rowid LIMIT 20 OFFSET ?;""", (20*bla,)
         )
         return cur.fetchall()
-
-
-
-def get_measurement(rowid: int) -> tuple:
-    """Gets a specific measurement
-
-    Args:
-        rowid (int): the rowid of the measurement in the DB
-
-    Returns:
-        tuple: the matching measurement
-    """
-    with sqlite3.connect(__MEASUREMENTS_DB) as conn:
-        cur = conn.cursor()
-        cur.execute(
-            "SELECT rowid,temperature,humidity,pressure FROM measurements WHERE rowid = ?;",
-            (rowid,),
-        )
-        return cur.fetchone()
-
-
-def delete_measurement(rowid: int) -> int:
-    """Deletes a specific measurement
-
-    Args:
-        rowid (int): the rowid of the measurement to be deleted
-
-    Returns:
-        int: the number of affected rows (0 or 1)
-    """
-    with sqlite3.connect(__MEASUREMENTS_DB) as conn:
-        cur = conn.cursor()
-        cur.execute(
-            "DELETE FROM measurements WHERE rowid = ?;",
-            (rowid,),
-        )
-        conn.commit()
-        return cur.rowcount
-
-
-
 
 if __name__ != "__main__":
     create_database()

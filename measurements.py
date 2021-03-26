@@ -41,66 +41,19 @@ def index() -> str:
     """
     return redirect(f"{__CONFIG['prefix']}/measurements")
 
-
-@app.route("/measurements/<int:rowid>", methods=["GET", "DELETE"])
-def measurement(rowid: int) -> str:
-    """Generates a specific measurement
-
-    Args:
-        rowid (int): the id of the desired measurement in the DB
-
-    Returns:
-        str: the generated page
-    """
-    if request.method == "DELETE":
-        if db.delete_measurement(rowid):
-            return Response(status=200)
-        return Response(status=404)
-    return render_template("measurement.html", row=db.get_measurement(rowid))
-
-@mqtt.on_connect()
-def handle_connect(client, userdata, flags, rc):
-    print("connected to MQTT broker...", end="")
-    mqtt.subscribe("au602716/#")
-    print("subscribed")
-
-@mqtt.on_message()
-def handle_mqtt_message(client, userdata, message):
-    topic = message.topic
-    payload = message.payload.decode()
-    if topic.endswith("/json"):
-        payload = json.loads(payload)
-        print("yay")
-        if "pres" in payload:
-            db.store_measurement(payload["temp"], payload["hum"], payload["pres"])
-            print(f"Received MQTT on {topic}: {payload}")
-    
-
-@app.route("/measurements", methods=["GET", "POST"])
+@app.route("/measurements", methods=["GET"])
 def measurements() -> str:
-    """If invoked with POST, stores the supplied measurement in the DB, and redirect to the measurements.
-    If invoked with GET, generates the measurements
-
-    Returns:
-        str: the generated page
-    """
-    if request.method == "POST":
-        if "temperature" in request.form and "humidity" in request.form and "pressure" in request.form:
-            db.store_measurement(
-                escape(request.form["temperature"]), escape(request.form["humidity"]), escape(request.form["pressure"])
-            )
-        return redirect(f"{__CONFIG['prefix']}/measurements")
     return render_template("index.html", list=db.ten_measurements(), maxtemp=db.max_temp()[0], mintemp=db.min_temp()[0], maxhum=db.max_hum()[0], minhum=db.min_hum()[0], maxpres=db.max_pres()[0], minpres=db.min_pres()[0])
 
-@app.route("/allmeasurements", methods=["GET"])
-def allmeasurements() -> str:
+@app.route("/allmeasurements/<int:bla>", methods=["GET"])
+def allmeasurements(bla) -> str:
     """If invoked with POST, stores the supplied measurement in the DB, and redirect to the measurements.
     If invoked with GET, generates the measurements
 
     Returns:
         str: the generated page
     """
-    return render_template("records.html", list=db.all_measurements())
+    return render_template("records.html", list=db.all_measurements(bla))
 
 @app.route("/maxtemp", methods=["GET"])
 def maxtemp() -> str:
@@ -126,6 +79,22 @@ def maxpres() -> str:
 def minpres() -> str:
     return render_template("index.html", list=db.min_pres())
 
+@mqtt.on_connect()
+def handle_connect(client, userdata, flags, rc):
+    print("connected to MQTT broker...", end="")
+    mqtt.subscribe("au602716/#")
+    print("subscribed")
+
+@mqtt.on_message()
+def handle_mqtt_message(client, userdata, message):
+    topic = message.topic
+    payload = message.payload.decode()
+    if topic.endswith("/json"):
+        payload = json.loads(payload)
+        if "pres" in payload:
+            db.store_measurement(payload["temp"], payload["hum"], payload["pres"])
+            print("new measure!")
+
 def handler(signal_received, frame):
     # Handle any cleanup here
     print("SIGINT or CTRL-C detected. Exiting gracefully")
@@ -136,4 +105,5 @@ if __name__ == "__main__":
     signal(SIGINT, handler)
     app.run(
         debug=__CONFIG["debug"], 
-        port=__CONFIG["port"])
+        port=__CONFIG["port"],
+        use_reloader=False)

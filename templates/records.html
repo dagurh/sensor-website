@@ -10,9 +10,12 @@
 {% endblock %}
 
 {% block body %}   
+<div class="leftnav">
+    <a href="/VM21/opg4a/measurements" style="margin-right: 35px">Latest measures</a>
+</div>
     <div class="content"> 
         {% if list %}
-        <div class="centeredleft" id="allmeasurements">
+        <div class="centeredall" id="allmeasurements">
         {% for row in list %}
             <div id="measurement-{{row[0]}}">
             <p>ID: {{row[0]}} | Temp: {{row[1]}} | Humid: {{row[2]}} | Pres: {{row[3]}} | Date: {{row[4]}}</p>
@@ -21,7 +24,13 @@
         </div>
         
         {% else %}
-        <p style="color: black; font-weight: 900;">There are no measurements</p>
+        <div class ="centeredall">
+        <p style="color: black; font-weight: 900;">No further measurements registered</p>
+        </div>
         {% endif %}
     </div>
+    <p class="bar" style="top: 85%; font-weight: 600;">Input the desired page and click submit</p>
+    <input class="bar" type="text" id="number" value=""/>
+    <button class="down" value="Submit" onclick="submit()">Submit</button>
+    
 {% endblock %}

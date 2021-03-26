@@ -7,30 +7,14 @@
         box-sizing: border-box;
     }
 </style>
+
 {% endblock %}
 
-{% block body %}   
+{% block body %} 
+<div class="rightnav">
+    <a href="/VM21/opg4a/allmeasurements/0" style="margin-left: 35px">Entry Records</a>
+</div>  
     <div class="content">
-        <form method="POST" action="{{prefix}}/measurements" id="measurements-form">
-            <div>
-                <label style="color: black; font-weight: 900;" for="temperature">Temperature:</label>
-                <input type="text" id="temperature" name="temperature">
-            <div role="alert" id="temperature-feedback" class="feedback" aria-relevant="all"></div>
-            </div>
-            <div>
-                <label style="color: black; font-weight: 900;" for="humidity">Humidity:</label>
-                <input type="text" id="humidity" name="humidity">
-            <div role="alert" id="humidity-feedback" class="feedback" aria-relevant="all"></div>
-            </div>
-            <div>
-                <label style="color: black; font-weight: 900;" for="pressure">Pressure:</label>
-                <textarea id="pressure" name="pressure"></textarea>
-            <div role="alert" id="pressure-feedback" class="feedback" aria-relevant="all"></div>
-            </div>
-        <div>
-            <button type="submit">Post</button>
-        </div>
-        </form>
         <div class="content">
         {% if maxtemp %}
         <div class="values" id="maxtemp">
@@ -108,7 +92,7 @@
         <div class="centered" id="measurements">
         {% for row in list %}
             <div id="measurement-{{row[0]}}">
-            <p>Temp: {{row[1]}} | Humid: {{row[2]}} | Pres: {{row[3]}} | Date: {{row[4]}} <button data-id="{{row[0]}}" class="delete">Delete</button></p>
+            <p>Temp: {{row[1]}} | Humid: {{row[2]}} | Pres: {{row[3]}} | Date: {{row[4]}}</p>
             </div>
         {% endfor %}
         </div>

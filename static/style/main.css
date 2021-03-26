@@ -76,10 +76,10 @@ div.centered {
   width: 540px;
 }
 
-div.centeredleft {
+div.centeredall {
   position: fixed; /* or absolute */
-  top: 35%;
-  left: 30%;
+  top: 50%;
+  left: 50%;
   /* bring your own prefixes */
   transform: translate(-50%, -50%);
 }
@@ -123,4 +123,46 @@ div.leftnav {
   border-bottom-right-radius: 100%;
   border: 2px solid;
   font-size: 1.5rem;
+}
+
+.arrow {
+  border: solid black;
+  border-width: 0 6px 6px 0;
+  display: inline-block;
+  padding: 6px;
+}
+
+.right {
+  transform: rotate(-45deg);
+  -webkit-transform: rotate(-45deg);
+  top: 90%;
+  left: 59%;
+  position: absolute;
+  background-color: inherit;
+}
+
+.left {
+  transform: rotate(135deg);
+  -webkit-transform: rotate(135deg);
+  top: 90%;
+  left: 40%;
+  position: absolute;
+  background-color: inherit;
+}
+
+.down {
+  top: 94%;
+  left: 48.5%;
+  position: absolute;
+}
+
+.arrow:hover {
+  cursor: pointer;
+}
+
+.bar {
+  position: absolute;
+  top: 90%;
+  left: 50%;
+  transform: translate(-50%, 0%);
 }
