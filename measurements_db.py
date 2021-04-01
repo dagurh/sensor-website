@@ -36,7 +36,7 @@ def store_measurement(temperature: str, humidity: str, pressure: str) -> int:
     with sqlite3.connect(__MEASUREMENTS_DB) as conn:
         cur = conn.cursor()
         cur.execute(
-            "INSERT INTO measurements VALUES (?,?,?,DATETIME('now'))", (temperature, humidity, pressure)
+            "INSERT INTO measurements VALUES (?,?,?,DATETIME('now', 'localtime'))", (temperature, humidity, pressure)
         )
         conn.commit()
         return cur.rowcount
